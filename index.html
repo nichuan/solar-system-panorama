@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030712" />
+    <meta name="description" content="探索基于 JPL 轨道参数的交互式太阳系全景。观察八大行星、时间流逝与太阳光照。" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>太阳系 · 真实全景模拟</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="scene" aria-label="可交互的太阳系三维模拟"></div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div id="labels" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <div><strong>太阳系</strong><small>SOLAR SYSTEM / EXPLORER</small></div>
+        </div>
+        <div class="top-actions">
+          <span class="live-pill"><i></i><span id="sim-status">模拟运行中</span></span>
+          <button id="overview-btn" class="icon-text-btn" type="button" title="返回全景" aria-label="返回太阳系全景">全景视角</button>
+          <button id="settings-btn" class="icon-btn" type="button" title="显示设置" aria-label="显示设置" aria-expanded="false">⚙</button>
+        </div>
+      </header>
+
+      <main class="overlay-content">
+        <section class="intro" aria-label="模拟介绍">
+          <div class="eyebrow"><span class="eyebrow-line"></span> INTERACTIVE PLANETARIUM <span class="eyebrow-line"></span></div>
+          <h1>一眼望见<br /><em>太阳系</em></h1>
+          <p>从太阳出发，沿着行星的真实轨道方位，穿越约 46 亿年的宇宙舞台。</p>
+          <div class="intro-metrics">
+            <div><strong>8</strong><span>颗行星</span></div>
+            <div><strong>30</strong><span>天文单位 / 海王星轨道</span></div>
+          </div>
+          <div class="drag-tip"><span aria-hidden="true">✥</span> 拖动旋转 · 滚轮缩放 · 点击星球探索</div>
+        </section>
+
+        <aside id="detail-panel" class="detail-panel" aria-live="polite">
+          <div class="detail-top"><span id="detail-index">01 / 09</span><button id="detail-close" type="button" aria-label="关闭详情">×</button></div>
+          <div class="detail-visual"><div id="detail-orb" class="detail-orb"></div><span class="detail-crosshair"></span></div>
+          <div class="detail-kind" id="detail-kind">恒星 · STAR</div>
+          <h2 id="detail-name">太阳</h2>
+          <p id="detail-description">太阳系的中心恒星，拥有整个太阳系超过 99% 的质量。它的引力维系着八大行星的运行。</p>
+          <div class="detail-stats" id="detail-stats"></div>
+            <button id="focus-btn" class="focus-btn" type="button">靠近观察</button>
+        </aside>
+      </main>
+
+      <div id="settings-panel" class="settings-panel" hidden>
+        <strong>显示设置</strong>
+        <label class="setting-row"><span>轨道线</span><input id="orbits-toggle" type="checkbox" checked /></label>
+        <label class="setting-row"><span>名称标签</span><input id="labels-toggle" type="checkbox" checked /></label>
+        <label class="setting-row"><span>小行星带</span><input id="asteroids-toggle" type="checkbox" checked /></label>
+        <label class="setting-row"><span>比例模式</span><select id="scale-select"><option value="explore">探索视图</option><option value="distance">线性距离</option></select></label>
+        <p>轨道位置采用 JPL 近似历表。探索视图压缩距离并放大天体，便于观察；线性距离按同一轨道比例显示，行星半径仍作放大。</p>
+        <p class="credit">纹理：<a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener noreferrer">Solar System Scope</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。球面映射、光照与亮度已调整；部分未测地形由原作者补全。</p>
+        <p class="credit">轨道与行星数据：<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener noreferrer">NASA/JPL</a>。仅适用于 1800–2050 年的近似展示，非航天导航历表。</p>
+      </div>
+
+      <footer class="dashboard">
+        <div class="time-controls">
+          <div class="time-heading"><span class="section-label">时空控制台</span><span id="date-caption">公元 2026 年 10 月 3 日</span></div>
+          <div class="time-main">
+            <button id="play-btn" class="play-btn" type="button" title="暂停" aria-label="暂停模拟"><span id="play-icon">Ⅱ</span></button>
+            <div class="date-wrap"><label for="date-input">模拟日期</label><input id="date-input" type="date" min="1800-01-01" max="2050-12-31" /></div>
+            <label class="speed-wrap" for="speed-select"><span>时间速度</span><select id="speed-select"><option value="0">静止</option><option value="0.0416666667" selected>1 小时 / 秒</option><option value="1">1 天 / 秒</option><option value="7">7 天 / 秒</option><option value="30">30 天 / 秒</option><option value="365">1 年 / 秒</option></select></label>
+            <button id="today-btn" class="today-btn" type="button">回到今天</button>
+          </div>
+        </div>
+        <div class="dashboard-divider"></div>
+        <div class="planet-navigation" aria-label="天体导航"><div class="nav-heading"><span class="section-label">目的地</span><span>选择一颗星球</span></div><div id="planet-list" class="planet-list"></div></div>
+      </footer>
+
+      <div id="loading" class="loading"><div class="loading-mark"></div><span>正在点亮星空</span></div>
+      <div id="error" class="error-screen" hidden><strong>无法启动三维场景</strong><p>请在支持 WebGL 的现代浏览器中打开。</p></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
